@@ -1,0 +1,301 @@
+{% extends "templates/web.html" %} {% block title %}{{ _("WhatsApp Management")
+}}{% endblock %} {% block page_content %}
+<div class="whatsapp-management-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="page-header-content">
+      <h1 class="page-title">
+        <i class="fa fa-whatsapp" style="color: #25d366"></i>
+        {{ _("WhatsApp Management") }}
+      </h1>
+      <p class="page-description">
+        {{ _("Gestiona tus conversaciones de WhatsApp desde Frappe CRM") }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Status Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card status-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="status-icon">
+              <i class="fa fa-comments" style="color: #25d366"></i>
+            </div>
+            <div class="status-info">
+              <h6 class="card-title">{{ _("Total Conversations") }}</h6>
+              <h4 class="card-text">{{ stats.total_conversations or 0 }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card status-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="status-icon">
+              <i class="fa fa-comment" style="color: #128c7e"></i>
+            </div>
+            <div class="status-info">
+              <h6 class="card-title">{{ _("Active Conversations") }}</h6>
+              <h4 class="card-text">{{ stats.active_conversations or 0 }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card status-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="status-icon">
+              <i class="fa fa-sync" style="color: #34b7f1"></i>
+            </div>
+            <div class="status-info">
+              <h6 class="card-title">{{ _("Last Sync") }}</h6>
+              <h6 class="card-text">{{ stats.last_sync or _("Never") }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card status-card">
+        <div class="card-body">
+          <div class="d-flex align-items-center">
+            <div class="status-icon">
+              <i
+                class="fa fa-circle"
+                style="color: {% if settings.status == 'Active' %}#28a745{% else %}#dc3545{% endif %};"
+              ></i>
+            </div>
+            <div class="status-info">
+              <h6 class="card-title">{{ _("Status") }}</h6>
+              <h6 class="card-text">{{ _(settings.status) }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="fa fa-cog"></i>
+            {{ _("WhatsApp Configuration") }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i>
+            <strong>{{ _("Welcome to WhatsApp Management!") }}</strong>
+            <p class="mb-0">
+              {{ _("This is your WhatsApp management dashboard. Here you can
+              configure your WhatsApp integration and manage conversations.") }}
+            </p>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h6>{{ _("Current Settings") }}</h6>
+              <table class="table table-sm">
+                <tr>
+                  <td><strong>{{ _("Title") }}:</strong></td>
+                  <td>{{ settings.title or _("Not configured") }}</td>
+                </tr>
+                <tr>
+                  <td><strong>{{ _("Status") }}:</strong></td>
+                  <td>
+                    <span
+                      class="badge badge-{% if settings.status == 'Active' %}success{% else %}secondary{% endif %}"
+                    >
+                      {{ _(settings.status) }}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>{{ _("Enabled") }}:</strong></td>
+                  <td>
+                    <span
+                      class="badge badge-{% if settings.enabled %}success{% else %}secondary{% endif %}"
+                    >
+                      {{ _("Yes") if settings.enabled else _("No") }}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="col-md-6">
+              <h6>{{ _("Quick Actions") }}</h6>
+              <div class="btn-group-vertical w-100">
+                <button
+                  class="btn btn-outline-primary mb-2"
+                  onclick="configureWhatsApp()"
+                >
+                  <i class="fa fa-cog"></i> {{ _("Configure WhatsApp") }}
+                </button>
+                <button
+                  class="btn btn-outline-success mb-2"
+                  onclick="syncConversations()"
+                >
+                  <i class="fa fa-sync"></i> {{ _("Sync Conversations") }}
+                </button>
+                <button
+                  class="btn btn-outline-info"
+                  onclick="viewConversations()"
+                >
+                  <i class="fa fa-comments"></i> {{ _("View Conversations") }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Placeholder for future features -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">
+            <i class="fa fa-road"></i>
+            {{ _("Coming Soon") }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="feature-placeholder">
+                <i class="fa fa-comments fa-2x text-muted"></i>
+                <h6>{{ _("Conversation List") }}</h6>
+                <p class="text-muted">
+                  {{ _("View and manage all your WhatsApp conversations") }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="feature-placeholder">
+                <i class="fa fa-paper-plane fa-2x text-muted"></i>
+                <h6>{{ _("Send Messages") }}</h6>
+                <p class="text-muted">
+                  {{ _("Send messages directly from the CRM") }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="feature-placeholder">
+                <i class="fa fa-chart-bar fa-2x text-muted"></i>
+                <h6>{{ _("Analytics") }}</h6>
+                <p class="text-muted">
+                  {{ _("Track your WhatsApp communication metrics") }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .whatsapp-management-container {
+    padding: 20px;
+  }
+
+  .page-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .page-title {
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .page-description {
+    color: #6c757d;
+    margin-bottom: 0;
+  }
+
+  .status-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+
+  .status-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .status-icon {
+    font-size: 2rem;
+    margin-right: 15px;
+  }
+
+  .status-info h6 {
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+
+  .status-info h4,
+  .status-info h6 {
+    margin-bottom: 0;
+  }
+
+  .feature-placeholder {
+    text-align: center;
+    padding: 20px;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .feature-placeholder i {
+    margin-bottom: 15px;
+  }
+
+  .btn-group-vertical .btn {
+    text-align: left;
+  }
+</style>
+
+<script>
+  function configureWhatsApp() {
+    frappe.msgprint({
+      title: '{{ _("Configure WhatsApp") }}',
+      message: '{{ _("WhatsApp configuration will be available soon!") }}',
+      indicator: "blue",
+    });
+  }
+
+  function syncConversations() {
+    frappe.msgprint({
+      title: '{{ _("Sync Conversations") }}',
+      message: '{{ _("Conversation sync will be available soon!") }}',
+      indicator: "blue",
+    });
+  }
+
+  function viewConversations() {
+    frappe.msgprint({
+      title: '{{ _("View Conversations") }}',
+      message: '{{ _("Conversation viewer will be available soon!") }}',
+      indicator: "blue",
+    });
+  }
+</script>
+{% endblock %}

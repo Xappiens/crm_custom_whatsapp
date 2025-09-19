@@ -1,9 +1,38 @@
 app_name = "crm_custom_whatsapp"
-app_title = "Crm Custom Whatsapp"
+app_title = "CRM Custom WhatsApp"
 app_publisher = "Xappiens"
-app_description = "Crm Custom Whatsapp"
+app_description = "Integración de WhatsApp para Frappe CRM"
 app_email = "xappiens@xappiens.com"
 app_license = "mit"
+
+# Desktop Icons
+# ------------------
+# Icons that will be shown in the desktop app
+
+desktop_icons = [
+    {
+        "module_name": "WhatsApp Management",
+        "label": "WhatsApp",
+        "icon": "octicon octicon-comment-discussion",
+        "color": "#25D366",
+        "link": "/app/whatsapp-management",
+        "type": "module"
+    }
+]
+
+# Website Context
+# ------------------
+# Context for website pages
+
+website_context = {
+    "whatsapp_management": "crm_custom_whatsapp.page.whatsapp_management.whatsapp_management.get_context"
+}
+
+# Website Generators
+# ------------------
+# automatically create page for each record of this doctype
+
+website_generators = ["WhatsApp Management"]
 
 # Apps
 # ------------------
@@ -83,7 +112,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "crm_custom_whatsapp.install.before_install"
-# after_install = "crm_custom_whatsapp.install.after_install"
+after_install = "crm_custom_whatsapp.install.after_install.after_install"
 
 # Uninstallation
 # ------------
